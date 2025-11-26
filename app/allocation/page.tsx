@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { allocationAPI, orderAPI } from '@/lib/api';
 import { exportAllocations } from '@/lib/csv-utils';
-import { Zap, RefreshCw, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import { Zap, RefreshCw, CheckCircle, XCircle, AlertCircle, Download, FileText } from 'lucide-react';
 import { format } from 'date-fns';
 import ImportExport from '@/components/ImportExport';
 
@@ -32,6 +32,7 @@ export default function AllocationPage() {
   const [selectedOrders, setSelectedOrders] = useState<number[]>([]);
   const [recalculateMetrics, setRecalculateMetrics] = useState(true);
   const [allocationHistory, setAllocationHistory] = useState<any[]>([]);
+  const [csvDownloadUrl, setCsvDownloadUrl] = useState<string | null>(null);
 
   useEffect(() => {
     loadAllocationHistory();
@@ -55,11 +56,24 @@ export default function AllocationPage() {
       });
       setResults(response.data);
       loadAllocationHistory();
+      
+      // CSV is automatically generated on the backend
+      // Show download option
+      setCsvDownloadUrl(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/export/allocation/latest/csv`);
     } catch (error) {
       console.error('Error allocating orders:', error);
       alert('Failed to allocate orders. Please check the server connection.');
     } finally {
       setAllocating(false);
+    }
+  };
+  
+  const downloadLatestCSV = () => {
+    if (csvDownloadUrl) {
+      window.open(csvDownloadUrl, '_blank');
+    } else {
+      const url = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/export/allocation/latest/csv`;
+      window.open(url, '_blank');
     }
   };
 
@@ -85,6 +99,16 @@ export default function AllocationPage() {
             exportFilename="allocation_history"
             title="Export Allocation History"
           />
+          {results.length > 0 && (
+            <button
+              onClick={downloadLatestCSV}
+              className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              title="Download CSV for this allocation"
+            >
+              <Download className="h-4 w-4" />
+              Download CSV
+            </button>
+          )}
           <button
             onClick={handleAllocate}
             disabled={allocating}
@@ -129,6 +153,26 @@ export default function AllocationPage() {
           </div>
         </div>
       </div>
+
+      {/* CSV Download Notice */}
+      {results.length > 0 && (
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <CheckCircle className="h-5 w-5 text-green-600" />
+            <div>
+              <p className="text-sm font-medium text-green-800">Allocation Complete</p>
+              <p className="text-sm text-green-600">CSV file has been automatically generated and saved</p>
+            </div>
+          </div>
+          <button
+            onClick={downloadLatestCSV}
+            className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors"
+          >
+            <Download className="h-4 w-4" />
+            Download CSV
+          </button>
+        </div>
+      )}
 
       {/* Allocation Results */}
       {results.length > 0 && (

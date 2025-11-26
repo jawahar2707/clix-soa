@@ -28,6 +28,11 @@ wheels/
 *.sqlite
 *.sqlite3
 
+# Exports (keep directory structure but ignore files)
+exports/csv/*.csv
+exports/print/*
+!exports/.gitkeep
+
 # IDE
 .vscode/
 .idea/

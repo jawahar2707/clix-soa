@@ -10,6 +10,7 @@ from app.schemas import (
     AllocationRequest, AllocationResult, AllocationResponse
 )
 from app.services.allocation_service import AllocationService
+from app.services.export_service import ExportService
 
 router = APIRouter(prefix="/allocation", tags=["allocation"])
 
@@ -26,6 +27,30 @@ def allocate_orders(
             db=db,
             recalculate_metrics=request.recalculate_metrics
         )
+        
+        # Automatically export to CSV after allocation
+        if results:
+            try:
+                # Export detailed allocation CSV
+                csv_path = ExportService.export_allocation_to_csv(
+                    allocation_results=results,
+                    order_ids=request.order_ids,
+                    db=db
+                )
+                
+                # Export summary CSV
+                summary_path = ExportService.export_allocation_summary_to_csv(
+                    allocation_results=results,
+                    db=db
+                )
+                
+                # Add export paths to response metadata (optional)
+                # You can access these via the response or store in a separate endpoint
+                
+            except Exception as export_error:
+                # Log error but don't fail the allocation
+                print(f"Warning: CSV export failed: {export_error}")
+        
         return results
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Allocation failed: {str(e)}")

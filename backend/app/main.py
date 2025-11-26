@@ -4,7 +4,7 @@ Main FastAPI application for Order Allocation System
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import init_db
-from app.api import customers, inventory, orders, payments, allocation, metrics
+from app.api import customers, inventory, orders, payments, allocation, metrics, export
 
 # Create FastAPI app
 app = FastAPI(
@@ -29,6 +29,7 @@ app.include_router(orders.router)
 app.include_router(payments.router)
 app.include_router(allocation.router)
 app.include_router(metrics.router)
+app.include_router(export.router)
 
 
 @app.on_event("startup")
