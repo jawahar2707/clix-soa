@@ -1,0 +1,55 @@
+================================================================================
+                    CLIX SOA - QUICK START GUIDE
+================================================================================
+
+BEFORE YOU START:
+-----------------
+You need to install:
+1. Python 3.8+ (https://www.python.org/downloads/)
+2. Node.js LTS (https://nodejs.org/)
+
+⚠️ IMPORTANT: Check "Add Python to PATH" during Python installation!
+
+
+AUTOMATED SETUP (Easiest):
+---------------------------
+1. Open PowerShell in this directory
+2. Run: .\setup.ps1
+   OR
+   Run: setup.bat (double-click it)
+
+This will install everything automatically!
+
+
+MANUAL SETUP:
+-------------
+Backend:
+  cd backend
+  pip install -r requirements.txt
+  python init_db.py
+
+Frontend:
+  npm install
+
+
+STARTING THE APPLICATION:
+-------------------------
+Terminal 1 (Backend):
+  cd backend
+  python run.py
+  → API: http://localhost:8000
+  → Docs: http://localhost:8000/docs
+
+Terminal 2 (Frontend):
+  npm run dev
+  → App: http://localhost:3001
+
+
+NEED HELP?
+----------
+- See SETUP_GUIDE.md for detailed instructions
+- See README.md for project overview
+- Check backend/QUICK_START.md for backend-specific help
+
+================================================================================
+

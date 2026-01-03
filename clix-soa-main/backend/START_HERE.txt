@@ -1,0 +1,48 @@
+================================================================================
+                    ORDER ALLOCATION SYSTEM - START HERE
+================================================================================
+
+⚠️  PYTHON IS NOT INSTALLED ON YOUR SYSTEM
+
+Before you can import data, you need to install Python 3.8 or higher.
+
+QUICK INSTALLATION (Choose one):
+
+1. MICROSOFT STORE (Easiest):
+   - Open Microsoft Store
+   - Search "Python 3.11"
+   - Click Install
+   - Restart terminal after installation
+
+2. OFFICIAL WEBSITE:
+   - Go to: https://www.python.org/downloads/
+   - Download latest Python 3.x
+   - During installation, CHECK "Add Python to PATH"
+   - Restart terminal after installation
+
+AFTER INSTALLING PYTHON:
+
+1. Open terminal in this folder (backend)
+
+2. Run the setup script:
+   .\setup_and_import.ps1
+
+   OR manually:
+   pip install -r requirements.txt
+   python init_db.py
+   python import_customers.py "C:\Users\Hxtreme\Downloads\Customers(Download)(L).csv"
+   python import_inventory.py "C:\Users\Hxtreme\Downloads\Items (7).csv"
+
+3. Start the server:
+   python run.py
+
+4. Open browser:
+   http://localhost:8000/docs
+
+================================================================================
+For detailed instructions, see:
+- QUICK_START.md
+- INSTALL_PYTHON.md
+- SETUP_AND_IMPORT.md
+================================================================================
+
